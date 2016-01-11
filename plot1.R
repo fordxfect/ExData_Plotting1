@@ -1,0 +1,11 @@
+data <- read.csv2("household_power_consumption.txt", na.strings = "?")
+colnames(data)
+data$Date <- as.Date(data$Date,format= "%d/%m/%Y")
+subdata <- subset(data, data$Date=="2007-02-01" | data$Date=="2007-02-02")
+subdata$Time <- paste(subdata$Date, subdata$Time)
+subdata$Time <- strptime(subdata$Time, format = "%Y-%m-%d %H:%M:%S")
+subdata$Global_active_power <- as.numeric(subdata$Global_active_power)
+subdata$Global_active_power <- subdata$Global_active_power/1000
+png("plot1.png")
+with(subdata, hist(Global_active_power, main = "Global Active Power", xlab = "Global Active Power (kilowatts)", ylab = "Frequency", col = "red"))
+dev.off()
